@@ -13,7 +13,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
   constructor(private authService: AuthServiceService) {}
 
-  newReq! : HttpRequest<any>;
+
 
   intercept(request: HttpRequest<unknown>,
     next: HttpHandler
@@ -21,17 +21,15 @@ export class TokenInterceptor implements HttpInterceptor {
     return this.authService.user$.pipe(take(1), switchMap(user => {
         if (!user) {
             console.log(request);
-            console.log(this.newReq);
             return next.handle(request);
         }
 
-        this.newReq = request.clone({
-            headers: request.headers.set('Authorization', `Bearer ${user.accessToken}`)
-        });
-
-        console.log(request);
-        console.log(this.newReq);
-        return next.handle(this.newReq);
+        const clonedRequest = request.clone({
+            setHeaders: {
+              Authorization: `Bearer ${user.accessToken}`
+            }
+          });
+        return next.handle(clonedRequest);
     }));
   }
 }

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -28,21 +28,33 @@ export class AuthServiceService {
 
 
     login(data: { email: string, password: string }) {
+        console.log(this.user$);
         return this.http.post<AuthData>(`${this.baseUrl}auth/login`, data).pipe(
             tap(data => {
-                console.log(data);
+
                 this.authSubject.next(data);
                 this.utente = data;
                 console.log(this.utente);
+                console.log(JSON.stringify(data));
+
+
                 localStorage.setItem('user', JSON.stringify(this.utente));
-                this.autoLogout(data);
+ //               this.autoLogout(data);
             }),
-            catchError(this.errors)
+            catchError((error) => {
+                console.error(error); // Stampa l'errore completo nella console
+                if (error instanceof HttpErrorResponse) {
+                    console.error('Status code:', error.status);
+                    console.error('Response body:', error.error);
+                    return throwError(error);
+                }
+                return throwError('Errore nella chiamata');
+            })
             );
     }
 
     //function che controlla la validita del token, e solo se non è scaduto l'applicazione riavviata non richiede il nuovo accesso, viceversa fa rieffettuare il login
-
+/**
     rimanda(){
         const user = localStorage.getItem('user');
         if(!user){
@@ -55,7 +67,7 @@ export class AuthServiceService {
         this.authSubject.next(utenteData);
         this.autoLogout(utenteData);
     }
-
+ */
 signup(data: {
     nome: string;
     cognome: string;
@@ -80,7 +92,7 @@ logout(){
 
 
 //function che esegue il logout in maniera automatica dopo aver verificato la scadenza del token
-
+/**
 autoLogout(data: AuthData){
     const tokenExpired = this.jwtHelper.getTokenExpirationDate(
         data.accessToken
@@ -91,6 +103,7 @@ autoLogout(data: AuthData){
     },expireMilliseconds );
 
 }
+ */
 
 //controllo con switch case verificare gli errore ( controllare e coadiuvare i metodi del backEnd )
 
