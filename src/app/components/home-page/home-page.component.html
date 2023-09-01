@@ -1,1 +1,23 @@
-<p>home-page works!</p>
+<div class="container">
+   <table class="table caption-top">
+    <caption>Lista dei clienti</caption>
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Handle</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let clienti of clienti">
+      <tr>
+        <th scope="row">1</th>
+        <td>{{clienti.ragione_Sociale}}</td>
+        <td>{{clienti.partita_Iva}}</td>
+        <td>{{clienti.fatturato_annuale}}</td>
+        <td>{{clienti.telefono}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

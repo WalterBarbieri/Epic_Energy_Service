@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 @Injectable({
@@ -5,12 +6,13 @@ import { environment } from 'src/environments/environment';
 })
 export class CRUDService {
 
-
     baseUrl = environment.baseUrl;
 
-  constructor() { }
+  constructor(private http:HttpClient) { }
 
-
+    getClienti(){
+        return this.http.get(`${this.baseUrl}utenti/cliente`)
+    }
 
 
 
