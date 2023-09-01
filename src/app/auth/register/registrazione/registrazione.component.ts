@@ -17,7 +17,7 @@ export class RegistrazioneComponent implements OnInit {
 
     registra(form: NgForm) {
         this.isLoading = true;
-        console.log(form.value);
+        console.log("Utente Registrato");
         try {
             this.authService.signup(form.value).subscribe();
             this.router.navigate(['/login']);

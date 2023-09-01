@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
 
   accedi(form: NgForm) {
     this.isLoading = true;
-    console.log(form.value);
+    console.log("Login effettuato con successo");
     try {
         this.authService.login(form.value).subscribe();
         this.isLoading = false;
